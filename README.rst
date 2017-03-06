@@ -10,7 +10,8 @@ Installation
 
 Then update database options inside `config/prod.php`
 
-    $ bin/console doctrine:schema:load
+    $ bin/console doctrine:database:create
+    $ bin/console doctrine:schema:create
     $ bin/console fixture:load
 
     $ run
