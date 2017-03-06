@@ -22,7 +22,7 @@ class Application extends SymfonyApplication
         $this->register('doctrine:database:create')
             ->setDescription('Creates the database')
             ->setCode(function (InputInterface $input, OutputInterface $output) {
-                $params = require __DIR__ . '/../../../config/prod.php';
+                $config = require __DIR__ . '/../../../config/prod.php';
                 $params = $config['db.options'];
                 $dbname = $params['dbname'];
                 unset($params['dbname']);
