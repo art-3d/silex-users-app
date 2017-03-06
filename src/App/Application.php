@@ -18,7 +18,9 @@ class Application extends SilexApplication
         parent::__construct();
 
         $app = $this;
-        require __DIR__.'/../../config/prod.php';
+        $config = require __DIR__.'/../../config/prod.php';
+        $app['twig.options'] = $config['twig.options'];
+        $app['db.options'] = $config['db.options'];
 
         $app->register(new ServiceControllerServiceProvider());
         $app->register(new TwigServiceProvider(), array(

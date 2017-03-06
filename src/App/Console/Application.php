@@ -6,6 +6,7 @@ use App\Application as App;
 use Symfony\Component\Console\Application as SymfonyApplication;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Doctrine\DBAL\DriverManager;
 
 class Application extends SymfonyApplication
 {
@@ -18,7 +19,19 @@ class Application extends SymfonyApplication
         $this->silexApp = $silexApp;
         $this->silexApp->boot();
 
-        $this->register('doctrine:schema:load')
+        $this->register('doctrine:database:create')
+            ->setDescription('Creates the database')
+            ->setCode(function (InputInterface $input, OutputInterface $output) {
+                $params = require __DIR__ . '/../../../config/prod.php';
+                $params = $config['db.options'];
+                $dbname = $params['dbname'];
+                unset($params['dbname']);
+
+                $tmpConnection = DriverManager::getConnection($params);
+                $tmpConnection->getSchemaManager()->createDatabase('silex');
+            });
+
+        $this->register('doctrine:schema:create')
             ->setDescription('Load schema')
             ->setCode(function (InputInterface $input, OutputInterface $output) {
                 $schema = require __DIR__.'/../../../config/schema-db.php';
