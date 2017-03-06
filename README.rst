@@ -18,4 +18,4 @@ Then update database options inside `config/prod.php`
     $ bin/console doctrine:schema:create
     $ bin/console fixture:load
 
-    $ run
+    $ composer run
