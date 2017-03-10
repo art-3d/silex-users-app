@@ -19,11 +19,11 @@ class Application extends SymfonyApplication
         $this->silexApp = $silexApp;
         $this->silexApp->boot();
 
-        $config = require __DIR__ . '/../../../config/prod.php';
-
         $this->register('doctrine:database:create')
             ->setDescription('Creates the database')
             ->setCode(function (InputInterface $input, OutputInterface $output) {
+                $config = require __DIR__ . '/../../../config/prod.php';
+
                 $params = $config['db.options'];
                 $dbname = $params['dbname'];
                 unset($params['dbname']);
@@ -35,6 +35,8 @@ class Application extends SymfonyApplication
         $this->register('doctrine:schema:create')
             ->setDescription('Load schema')
             ->setCode(function (InputInterface $input, OutputInterface $output) {
+                $schema = require __DIR__.'/../../../config/schema-db.php';
+
                 foreach ($schema->toSql($this->silexApp['db']->getDatabasePlatform()) as $sql) {
                     $this->silexApp['db']->exec($sql.';');
                 }
@@ -42,7 +44,9 @@ class Application extends SymfonyApplication
 
         $this->register('fixture:load')
             ->setDescription('Load some fixture')
-            ->setCode(function (InputInterface $input, OutputInterface $outpu) {
+            ->setCode(function (InputInterface $input, OutputInterface $output) {
+                $fixtures = require __DIR__ . '/../../../config/fixture.php';
+
                 foreach ($fixtures as $fixture) {
                     $this->silexApp['db']->insert('user', $fixture);
                 }
