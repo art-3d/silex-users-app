@@ -1,5 +1,4 @@
 <?php
-
 namespace App;
 
 use Silex\Application as SilexApplication;
@@ -13,7 +12,7 @@ use Silex\Provider\AssetServiceProvider;
 
 class Application extends SilexApplication
 {
-    public function __construct()
+    public function __construct($config)
     {
         parent::__construct();
 

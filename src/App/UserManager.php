@@ -1,5 +1,4 @@
 <?php
-
 namespace App;
 
 use Silex\Application as SilexApplication;
